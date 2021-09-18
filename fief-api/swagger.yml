@@ -8,7 +8,6 @@ basePath: /v1
 produces:
 - application/json
 schemes:
-- https
 - http
 swagger: "2.0"
 securityDefinitions:
