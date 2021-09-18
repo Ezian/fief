@@ -1,0 +1,114 @@
+consumes:
+- application/json
+info:
+  description: API of the server for Fief Diplomatie
+  title: Fief Diplomatie API
+  version: 1.0.0
+produces:
+- application/json
+schemes:
+- https
+swagger: "2.0"
+paths:
+  /signup/{code}:
+    parameters:
+      - name: code
+        in: path
+        description: Authorization code that allow player to signup in server 
+        required: true
+        type: string
+    post:
+      description: Create user with login/password
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/credentials'
+      responses:
+        '200':
+          description: Todo
+  /signin:
+    post:
+      description: Signin with login/password and retrieve JWT token for further requests
+      parameters:
+        - name: credentials
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/credentials'
+      responses:
+        '200':
+          description: Todo
+  /games:
+    get:
+      description: List existing games
+      responses:
+        '200':
+          description: TODO
+  /games/new:
+    post:
+      description: Create a new game
+      responses:
+        '200':
+          description: TODO
+  /games/{id}/join:
+    post:
+      description: Join an existing game
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: TODO
+  /games/{id}/status:
+    get:
+      description: Get current state of an existing game
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: TODO
+  /games/{id}/instructions:
+    post:
+      description: Post an instruction for the authenticated user on the session, if no instruction defined
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      - name: instruction
+        in: body
+        schema: 
+          type: string
+      responses:
+        '200':
+          description: TODO
+    get:
+      description: Retrieve the current instructions for the authenticated user
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+      responses:
+        '200':
+          description: TODO
+
+
+definitions:
+  credentials:
+    type: object
+    required:
+      - login
+      - password
+    properties:
+      login:
+        type: string
+      password:
+        type: string
