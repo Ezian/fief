@@ -4,11 +4,18 @@ info:
   description: API of the server for Fief Diplomatie
   title: Fief Diplomatie API
   version: 1.0.0
+basePath: /v1
 produces:
 - application/json
 schemes:
 - https
+- http
 swagger: "2.0"
+securityDefinitions:
+  isAuthenticated:
+    type: apiKey
+    in: header
+    name: Authorization
 paths:
   /signup/{code}:
     parameters:
@@ -26,10 +33,26 @@ paths:
           schema:
             $ref: '#/definitions/credentials'
       responses:
-        '200':
-          description: Todo
+        200:
+          description: Successful login
+          schema:
+            $ref: '#/definitions/LoginSuccess'
+        400:
+          description: Bad Request
+        404:
+          schema:
+            type: string
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
   /signin:
     post:
+      tags: [user]
+      operationId: Login
+      consumes:
+        - "application/json"
       description: Signin with login/password and retrieve JWT token for further requests
       parameters:
         - name: credentials
@@ -42,18 +65,27 @@ paths:
           description: Todo
   /games:
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: List existing games
       responses:
         '200':
           description: TODO
   /games/new:
     post:
+      tags: [manage]
+      security:
+        - Bearer: []
       description: Create a new game
       responses:
         '200':
           description: TODO
   /games/{id}/join:
     post:
+      tags: [manage]
+      security:
+        - Bearer: []
       description: Join an existing game
       parameters:
       - name: id
@@ -65,6 +97,9 @@ paths:
           description: TODO
   /games/{id}/status:
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Get current state of an existing game
       parameters:
       - name: id
@@ -76,6 +111,9 @@ paths:
           description: TODO
   /games/{id}/instructions:
     post:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Post an instruction for the authenticated user on the session, if no instruction defined
       parameters:
       - name: id
@@ -90,6 +128,9 @@ paths:
         '200':
           description: TODO
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Retrieve the current instructions for the authenticated user
       parameters:
       - name: id
@@ -102,6 +143,13 @@ paths:
 
 
 definitions:
+  LoginSuccess:
+    type: object
+    properties:
+      success:
+        type: boolean
+      token:
+        type: string
   credentials:
     type: object
     required:
