@@ -70,6 +70,13 @@ func NewFiefAPI(spec *loads.Document) *FiefAPI {
 		PostSignupCodeHandler: PostSignupCodeHandlerFunc(func(params PostSignupCodeParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostSignupCode has not yet been implemented")
 		}),
+
+		// Applies when the "Authorization" header is set
+		BearerAuth: func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (Bearer) Authorization from header param [Authorization] has not yet been implemented")
+		},
+		// default authorizer is authorized meaning no requests are blocked
+		APIAuthorizer: security.Authorized(),
 	}
 }
 
@@ -105,6 +112,13 @@ type FiefAPI struct {
 	// JSONProducer registers a producer for the following mime types:
 	//   - application/json
 	JSONProducer runtime.Producer
+
+	// BearerAuth registers a function that takes a token and returns a principal
+	// it performs authentication based on an api key Authorization provided in the header
+	BearerAuth func(string) (interface{}, error)
+
+	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
+	APIAuthorizer runtime.Authorizer
 
 	// GameGetGamesHandler sets the operation handler for the get games operation
 	GameGetGamesHandler game.GetGamesHandler
@@ -199,6 +213,10 @@ func (o *FiefAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.BearerAuth == nil {
+		unregistered = append(unregistered, "AuthorizationAuth")
+	}
+
 	if o.GameGetGamesHandler == nil {
 		unregistered = append(unregistered, "game.GetGamesHandler")
 	}
@@ -238,12 +256,21 @@ func (o *FiefAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *h
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
 func (o *FiefAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
-	return nil
+	result := make(map[string]runtime.Authenticator)
+	for name := range schemes {
+		switch name {
+		case "Bearer":
+			scheme := schemes[name]
+			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.BearerAuth)
+
+		}
+	}
+	return result
 }
 
 // Authorizer returns the registered authorizer
 func (o *FiefAPI) Authorizer() runtime.Authorizer {
-	return nil
+	return o.APIAuthorizer
 }
 
 // ConsumersFor gets the consumers for the specified media types.

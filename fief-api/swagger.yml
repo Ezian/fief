@@ -11,7 +11,7 @@ schemes:
 - http
 swagger: "2.0"
 securityDefinitions:
-  isAuthenticated:
+  Bearer:
     type: apiKey
     in: header
     name: Authorization
@@ -20,7 +20,7 @@ paths:
     parameters:
       - name: code
         in: path
-        description: Authorization code that allow player to signup in server 
+        description: Authorization code that allow Bearer to signup in server 
         required: true
         type: string
     post:

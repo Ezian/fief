@@ -40,6 +40,19 @@ func configureAPI(api *operations.FiefAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	// Applies when the "Authorization" header is set
+	if api.BearerAuth == nil {
+		api.BearerAuth = func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (Bearer) Authorization from header param [Authorization] has not yet been implemented")
+		}
+	}
+
+	// Set your custom authorizer if needed. Default one is security.Authorized()
+	// Expected interface runtime.Authorizer
+	//
+	// Example:
+	// api.APIAuthorizer = security.Authorized()
+
 	if api.GameGetGamesHandler == nil {
 		api.GameGetGamesHandler = game.GetGamesHandlerFunc(func(params game.GetGamesParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation game.GetGames has not yet been implemented")
