@@ -1,35 +1,52 @@
-consumes:
-- application/json
+
 info:
   description: API of the server for Fief Diplomatie
   title: Fief Diplomatie API
   version: 1.0.0
-produces:
-- application/json
-schemes:
-- https
+basePath: /v1
+consumes: ["application/json"]
+produces: ["application/json"]
+schemes: ["http"]
 swagger: "2.0"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    in: header
+    name: Authorization
 paths:
-  /signup/{code}:
-    parameters:
-      - name: code
-        in: path
-        description: Authorization code that allow player to signup in server 
-        required: true
-        type: string
+  /register:
     post:
-      description: Create user with login/password
+      description: Register a new user
+      tags: [user]
+      operationId: Register
       parameters:
-        - name: credentials
+        - name: signup
           in: body
+          description: Registration payload
           required: true
           schema:
-            $ref: '#/definitions/credentials'
+            $ref: '#/definitions/RegisterUser'
       responses:
-        '200':
-          description: Todo
+        200:
+          description: Successful registration
+          schema:
+            $ref: '#/definitions/SuccessResponse'
+        400:
+          description: Bad Request
+        404:
+          schema:
+            type: string
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
   /signin:
     post:
+      tags: [user]
+      operationId: Login
+      consumes:
+        - "application/json"
       description: Signin with login/password and retrieve JWT token for further requests
       parameters:
         - name: credentials
@@ -42,18 +59,27 @@ paths:
           description: Todo
   /games:
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: List existing games
       responses:
         '200':
           description: TODO
   /games/new:
     post:
+      tags: [manage]
+      security:
+        - Bearer: []
       description: Create a new game
       responses:
         '200':
           description: TODO
   /games/{id}/join:
     post:
+      tags: [manage]
+      security:
+        - Bearer: []
       description: Join an existing game
       parameters:
       - name: id
@@ -65,6 +91,9 @@ paths:
           description: TODO
   /games/{id}/status:
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Get current state of an existing game
       parameters:
       - name: id
@@ -76,6 +105,9 @@ paths:
           description: TODO
   /games/{id}/instructions:
     post:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Post an instruction for the authenticated user on the session, if no instruction defined
       parameters:
       - name: id
@@ -90,6 +122,9 @@ paths:
         '200':
           description: TODO
     get:
+      tags: [game]
+      security:
+        - Bearer: []
       description: Retrieve the current instructions for the authenticated user
       parameters:
       - name: id
@@ -102,6 +137,26 @@ paths:
 
 
 definitions:
+  SuccessResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+  RegisterUser:
+    type: object
+    required:
+      - email
+      - login
+      - password
+    properties:
+      email:
+        type: string
+      login:
+        type: string
+      password:
+        type: string
   credentials:
     type: object
     required:
