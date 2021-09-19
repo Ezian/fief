@@ -1,14 +1,12 @@
-consumes:
-- application/json
+
 info:
   description: API of the server for Fief Diplomatie
   title: Fief Diplomatie API
   version: 1.0.0
 basePath: /v1
-produces:
-- application/json
-schemes:
-- http
+consumes: ["application/json"]
+produces: ["application/json"]
+schemes: ["http"]
 swagger: "2.0"
 securityDefinitions:
   Bearer:
@@ -16,26 +14,23 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:
-  /signup/{code}:
-    parameters:
-      - name: code
-        in: path
-        description: Authorization code that allow Bearer to signup in server 
-        required: true
-        type: string
+  /register:
     post:
-      description: Create user with login/password
+      description: Register a new user
+      tags: [user]
+      operationId: Register
       parameters:
-        - name: credentials
+        - name: signup
           in: body
+          description: Registration payload
           required: true
           schema:
-            $ref: '#/definitions/credentials'
+            $ref: '#/definitions/RegisterUser'
       responses:
         200:
-          description: Successful login
+          description: Successful registration
           schema:
-            $ref: '#/definitions/LoginSuccess'
+            $ref: '#/definitions/SuccessResponse'
         400:
           description: Bad Request
         404:
@@ -142,12 +137,25 @@ paths:
 
 
 definitions:
-  LoginSuccess:
+  SuccessResponse:
     type: object
     properties:
       success:
         type: boolean
-      token:
+      message:
+        type: string
+  RegisterUser:
+    type: object
+    required:
+      - email
+      - login
+      - password
+    properties:
+      email:
+        type: string
+      login:
+        type: string
+      password:
         type: string
   credentials:
     type: object

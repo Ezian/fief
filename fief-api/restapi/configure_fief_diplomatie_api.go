@@ -10,19 +10,25 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
+	"fief/auth"
+	"fief/handlers"
 	"fief/restapi/operations"
 	"fief/restapi/operations/game"
 	"fief/restapi/operations/manage"
 	"fief/restapi/operations/user"
 )
 
-//go:generate swagger generate server --target ../../fief-api --name Fief --spec ../swagger.yml --principal interface{}
+//go:generate swagger generate server --target ../../fief-api --name FiefDiplomatieAPI --spec ../swagger.yml --principal interface{}
 
-func configureFlags(api *operations.FiefAPI) {
+func configureFlags(api *operations.FiefDiplomatieAPIAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.FiefAPI) http.Handler {
+func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
+	clientBuilder := auth.NewClientBuilder()
+
+	authDbClient := clientBuilder.BuildBoltClient()
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -88,11 +94,8 @@ func configureAPI(api *operations.FiefAPI) http.Handler {
 			return middleware.NotImplemented("operation manage.PostGamesNew has not yet been implemented")
 		})
 	}
-	if api.PostSignupCodeHandler == nil {
-		api.PostSignupCodeHandler = operations.PostSignupCodeHandlerFunc(func(params operations.PostSignupCodeParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.PostSignupCode has not yet been implemented")
-		})
-	}
+
+	api.UserRegisterHandler = handlers.NewUserRegisterHandler(authDbClient)
 
 	api.PreServerShutdown = func() {}
 

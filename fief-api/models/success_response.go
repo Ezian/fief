@@ -12,30 +12,30 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// LoginSuccess login success
+// SuccessResponse success response
 //
-// swagger:model LoginSuccess
-type LoginSuccess struct {
+// swagger:model SuccessResponse
+type SuccessResponse struct {
+
+	// message
+	Message string `json:"message,omitempty"`
 
 	// success
 	Success bool `json:"success,omitempty"`
-
-	// token
-	Token string `json:"token,omitempty"`
 }
 
-// Validate validates this login success
-func (m *LoginSuccess) Validate(formats strfmt.Registry) error {
+// Validate validates this success response
+func (m *SuccessResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this login success based on context it is used
-func (m *LoginSuccess) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this success response based on context it is used
+func (m *SuccessResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *LoginSuccess) MarshalBinary() ([]byte, error) {
+func (m *SuccessResponse) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -43,8 +43,8 @@ func (m *LoginSuccess) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *LoginSuccess) UnmarshalBinary(b []byte) error {
-	var res LoginSuccess
+func (m *SuccessResponse) UnmarshalBinary(b []byte) error {
+	var res SuccessResponse
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

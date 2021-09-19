@@ -23,7 +23,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewFiefAPI(swaggerSpec)
+	api := operations.NewFiefDiplomatieAPIAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 

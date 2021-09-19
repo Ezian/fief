@@ -1,0 +1,8 @@
+POST http://127.0.0.1:8080/v1/register
+content-type: application/json
+
+{
+  "email": "test@test.com",
+  "login": "Bidule",
+  "password": "klsfjhqsljk"
+}

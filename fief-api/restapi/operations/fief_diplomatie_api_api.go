@@ -24,9 +24,9 @@ import (
 	"fief/restapi/operations/user"
 )
 
-// NewFiefAPI creates a new Fief instance
-func NewFiefAPI(spec *loads.Document) *FiefAPI {
-	return &FiefAPI{
+// NewFiefDiplomatieAPIAPI creates a new FiefDiplomatieAPI instance
+func NewFiefDiplomatieAPIAPI(spec *loads.Document) *FiefDiplomatieAPIAPI {
+	return &FiefDiplomatieAPIAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -67,8 +67,8 @@ func NewFiefAPI(spec *loads.Document) *FiefAPI {
 		ManagePostGamesNewHandler: manage.PostGamesNewHandlerFunc(func(params manage.PostGamesNewParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation manage.PostGamesNew has not yet been implemented")
 		}),
-		PostSignupCodeHandler: PostSignupCodeHandlerFunc(func(params PostSignupCodeParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostSignupCode has not yet been implemented")
+		UserRegisterHandler: user.RegisterHandlerFunc(func(params user.RegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation user.Register has not yet been implemented")
 		}),
 
 		// Applies when the "Authorization" header is set
@@ -80,8 +80,8 @@ func NewFiefAPI(spec *loads.Document) *FiefAPI {
 	}
 }
 
-/*FiefAPI API of the server for Fief Diplomatie */
-type FiefAPI struct {
+/*FiefDiplomatieAPIAPI API of the server for Fief Diplomatie */
+type FiefDiplomatieAPIAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -134,8 +134,8 @@ type FiefAPI struct {
 	ManagePostGamesIDJoinHandler manage.PostGamesIDJoinHandler
 	// ManagePostGamesNewHandler sets the operation handler for the post games new operation
 	ManagePostGamesNewHandler manage.PostGamesNewHandler
-	// PostSignupCodeHandler sets the operation handler for the post signup code operation
-	PostSignupCodeHandler PostSignupCodeHandler
+	// UserRegisterHandler sets the operation handler for the register operation
+	UserRegisterHandler user.RegisterHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -157,52 +157,52 @@ type FiefAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *FiefAPI) UseRedoc() {
+func (o *FiefDiplomatieAPIAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *FiefAPI) UseSwaggerUI() {
+func (o *FiefDiplomatieAPIAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *FiefAPI) SetDefaultProduces(mediaType string) {
+func (o *FiefDiplomatieAPIAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *FiefAPI) SetDefaultConsumes(mediaType string) {
+func (o *FiefDiplomatieAPIAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *FiefAPI) SetSpec(spec *loads.Document) {
+func (o *FiefDiplomatieAPIAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *FiefAPI) DefaultProduces() string {
+func (o *FiefDiplomatieAPIAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *FiefAPI) DefaultConsumes() string {
+func (o *FiefDiplomatieAPIAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *FiefAPI) Formats() strfmt.Registry {
+func (o *FiefDiplomatieAPIAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *FiefAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *FiefDiplomatieAPIAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the FiefAPI
-func (o *FiefAPI) Validate() error {
+// Validate validates the registrations in the FiefDiplomatieAPIAPI
+func (o *FiefDiplomatieAPIAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -238,8 +238,8 @@ func (o *FiefAPI) Validate() error {
 	if o.ManagePostGamesNewHandler == nil {
 		unregistered = append(unregistered, "manage.PostGamesNewHandler")
 	}
-	if o.PostSignupCodeHandler == nil {
-		unregistered = append(unregistered, "PostSignupCodeHandler")
+	if o.UserRegisterHandler == nil {
+		unregistered = append(unregistered, "user.RegisterHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -250,12 +250,12 @@ func (o *FiefAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *FiefAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *FiefDiplomatieAPIAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *FiefAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *FiefDiplomatieAPIAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	result := make(map[string]runtime.Authenticator)
 	for name := range schemes {
 		switch name {
@@ -269,13 +269,13 @@ func (o *FiefAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[
 }
 
 // Authorizer returns the registered authorizer
-func (o *FiefAPI) Authorizer() runtime.Authorizer {
+func (o *FiefDiplomatieAPIAPI) Authorizer() runtime.Authorizer {
 	return o.APIAuthorizer
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *FiefAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *FiefDiplomatieAPIAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -292,7 +292,7 @@ func (o *FiefAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer 
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *FiefAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *FiefDiplomatieAPIAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -308,7 +308,7 @@ func (o *FiefAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer 
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *FiefAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *FiefDiplomatieAPIAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -323,8 +323,8 @@ func (o *FiefAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the fief API
-func (o *FiefAPI) Context() *middleware.Context {
+// Context returns the middleware context for the fief diplomatie API API
+func (o *FiefDiplomatieAPIAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -332,7 +332,7 @@ func (o *FiefAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *FiefAPI) initHandlerCache() {
+func (o *FiefDiplomatieAPIAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
@@ -369,12 +369,12 @@ func (o *FiefAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/signup/{code}"] = NewPostSignupCode(o.context, o.PostSignupCodeHandler)
+	o.handlers["POST"]["/register"] = user.NewRegister(o.context, o.UserRegisterHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *FiefAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *FiefDiplomatieAPIAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -387,24 +387,24 @@ func (o *FiefAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *FiefAPI) Init() {
+func (o *FiefDiplomatieAPIAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *FiefAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *FiefDiplomatieAPIAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *FiefAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *FiefDiplomatieAPIAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *FiefAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *FiefDiplomatieAPIAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

@@ -180,6 +180,49 @@ func init() {
         }
       }
     },
+    "/register": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/signin": {
       "post": {
         "description": "Signin with login/password and retrieve JWT token for further requests",
@@ -206,64 +249,36 @@ func init() {
           }
         }
       }
-    },
-    "/signup/{code}": {
-      "post": {
-        "description": "Create user with login/password",
-        "parameters": [
-          {
-            "name": "credentials",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/credentials"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "type": "string",
-          "description": "Authorization code that allow player to signup in server",
-          "name": "code",
-          "in": "path",
-          "required": true
-        }
-      ]
     }
   },
   "definitions": {
-    "LoginSuccess": {
+    "RegisterUser": {
+      "type": "object",
+      "required": [
+        "email",
+        "login",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessResponse": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string"
+        },
         "success": {
           "type": "boolean"
-        },
-        "token": {
-          "type": "string"
         }
       }
     },
@@ -454,6 +469,49 @@ func init() {
         }
       }
     },
+    "/register": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/signin": {
       "post": {
         "description": "Signin with login/password and retrieve JWT token for further requests",
@@ -480,64 +538,36 @@ func init() {
           }
         }
       }
-    },
-    "/signup/{code}": {
-      "post": {
-        "description": "Create user with login/password",
-        "parameters": [
-          {
-            "name": "credentials",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/credentials"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "parameters": [
-        {
-          "type": "string",
-          "description": "Authorization code that allow player to signup in server",
-          "name": "code",
-          "in": "path",
-          "required": true
-        }
-      ]
     }
   },
   "definitions": {
-    "LoginSuccess": {
+    "RegisterUser": {
+      "type": "object",
+      "required": [
+        "email",
+        "login",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessResponse": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string"
+        },
         "success": {
           "type": "boolean"
-        },
-        "token": {
-          "type": "string"
         }
       }
     },
