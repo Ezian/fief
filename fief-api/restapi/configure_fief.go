@@ -18,17 +18,16 @@ import (
 	"fief/restapi/operations/user"
 )
 
-//go:generate swagger generate server --target ../../fief-api --name FiefDiplomatieAPI --spec ../swagger.yml --principal interface{}
+//go:generate swagger generate server --target ../../fief-api --name Fief --spec ../swagger.yml --principal interface{}
 
-func configureFlags(api *operations.FiefDiplomatieAPIAPI) {
+func configureFlags(api *operations.FiefAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
+func configureAPI(api *operations.FiefAPI) http.Handler {
 	clientBuilder := auth.NewClientBuilder()
 
 	authDbClient := clientBuilder.BuildBoltClient()
-
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -96,6 +95,12 @@ func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
 	}
 
 	api.UserRegisterHandler = handlers.NewUserRegisterHandler(authDbClient)
+
+	if api.UserRegisterHandler == nil {
+		api.UserRegisterHandler = user.RegisterHandlerFunc(func(params user.RegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation user.Register has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 

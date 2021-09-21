@@ -39,7 +39,7 @@ type LoginParams struct {
 	  Required: true
 	  In: body
 	*/
-	Credentials *models.Credentials
+	Login *models.LoginInfo
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -53,12 +53,12 @@ func (o *LoginParams) BindRequest(r *http.Request, route *middleware.MatchedRout
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.Credentials
+		var body models.LoginInfo
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			if err == io.EOF {
-				res = append(res, errors.Required("credentials", "body", ""))
+				res = append(res, errors.Required("login", "body", ""))
 			} else {
-				res = append(res, errors.NewParseError("credentials", "body", "", err))
+				res = append(res, errors.NewParseError("login", "body", "", err))
 			}
 		} else {
 			// validate body object
@@ -72,11 +72,11 @@ func (o *LoginParams) BindRequest(r *http.Request, route *middleware.MatchedRout
 			}
 
 			if len(res) == 0 {
-				o.Credentials = &body
+				o.Login = &body
 			}
 		}
 	} else {
-		res = append(res, errors.Required("credentials", "body", ""))
+		res = append(res, errors.Required("login", "body", ""))
 	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

@@ -49,14 +49,26 @@ paths:
         - "application/json"
       description: Signin with login/password and retrieve JWT token for further requests
       parameters:
-        - name: credentials
+        - name: Login
           in: body
           required: true
           schema:
-            $ref: '#/definitions/credentials'
+            $ref: '#/definitions/LoginInfo'
       responses:
-        '200':
-          description: Todo
+        200:
+          description: Successful login
+          schema:
+            $ref: '#/definitions/LoginSuccess'
+        400:
+          description: Bad Request
+        404:
+          schema:
+            type: string
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
   /games:
     get:
       tags: [game]
@@ -157,7 +169,7 @@ definitions:
         type: string
       password:
         type: string
-  credentials:
+  LoginInfo:
     type: object
     required:
       - login
@@ -166,4 +178,11 @@ definitions:
       login:
         type: string
       password:
+        type: string
+  LoginSuccess:
+    type: object
+    properties:
+      success:
+        type: boolean
+      token:
         type: string
