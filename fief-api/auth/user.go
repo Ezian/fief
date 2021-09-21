@@ -85,3 +85,32 @@ func safeGetUsersSubBucket(bucket *bolt.Bucket, subKey string, userKey []byte) (
 	}
 	return subBucket, nil
 }
+
+func CheckUserPassword(db *bolt.DB, login, password string) (bool, error) {
+
+	// TODO get password from DB
+	var dbPassword []byte
+	err := db.View(func(tx *bolt.Tx) error {
+		usersBucket := tx.Bucket([]byte(USERS_BUCKET))
+		if usersBucket == nil {
+			return fmt.Errorf("no bucket %q", USERS_BUCKET)
+		}
+		authBucket := usersBucket.Bucket([]byte(USERS_AUTH_BUCKET))
+		if usersBucket == nil {
+			return fmt.Errorf("no bucket %q", USERS_AUTH_BUCKET)
+		}
+
+		dbPassword = authBucket.Get([]byte(login))
+		return nil
+	})
+	if err != nil {
+		return false, err
+	}
+
+	err = bcrypt.CompareHashAndPassword(dbPassword, []byte(password))
+	if err != nil {
+		fmt.Println(err)
+		return false, nil
+	}
+	return true, nil
+}

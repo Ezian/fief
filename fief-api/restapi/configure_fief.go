@@ -73,11 +73,7 @@ func configureAPI(api *operations.FiefAPI) http.Handler {
 			return middleware.NotImplemented("operation game.GetGamesIDStatus has not yet been implemented")
 		})
 	}
-	if api.UserLoginHandler == nil {
-		api.UserLoginHandler = user.LoginHandlerFunc(func(params user.LoginParams) middleware.Responder {
-			return middleware.NotImplemented("operation user.Login has not yet been implemented")
-		})
-	}
+
 	if api.GamePostGamesIDInstructionsHandler == nil {
 		api.GamePostGamesIDInstructionsHandler = game.PostGamesIDInstructionsHandlerFunc(func(params game.PostGamesIDInstructionsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation game.PostGamesIDInstructions has not yet been implemented")
@@ -93,6 +89,8 @@ func configureAPI(api *operations.FiefAPI) http.Handler {
 			return middleware.NotImplemented("operation manage.PostGamesNew has not yet been implemented")
 		})
 	}
+
+	api.UserLoginHandler = handlers.NewUserLoginHandler(authDbClient)
 
 	api.UserRegisterHandler = handlers.NewUserRegisterHandler(authDbClient)
 

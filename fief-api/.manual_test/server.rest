@@ -3,6 +3,15 @@ content-type: application/json
 
 {
   "email": "test@test.com",
-  "login": "Bidule",
-  "password": "klsfjhqsljk"
+  "login": "Truc",
+  "password": ""
+}
+###
+
+POST http://127.0.0.1:8080/v1/signin
+content-type: application/json
+
+{
+  "login": "Truc",
+  "password": ""
 }
