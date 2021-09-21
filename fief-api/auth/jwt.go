@@ -21,6 +21,7 @@ func GenerateJWT(userLogin string) (string, error) {
 
 	tokenString, err := token.SignedString([]byte(mySecretKeyForJWT))
 	if err != nil {
+		// TODO Wrap error in a correct way
 		return "", err
 	}
 	return tokenString, nil

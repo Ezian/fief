@@ -33,10 +33,6 @@ paths:
             $ref: '#/definitions/SuccessResponse'
         400:
           description: Bad Request
-        404:
-          schema:
-            type: string
-          description: User not found
         500:
           schema:
             type: string

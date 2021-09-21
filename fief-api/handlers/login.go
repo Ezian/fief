@@ -22,16 +22,19 @@ func NewUserLoginHandler(db *bolt.DB) user.LoginHandler {
 func (impl *loginImpl) Handle(params user.LoginParams) middleware.Responder {
 	ok, err := auth.CheckUserPassword(impl.dbClient, *params.Login.Login, *params.Login.Password)
 	if err != nil {
+		// TODO log error before return
 		return user.NewLoginInternalServerError().WithPayload("Error fetching user details")
 	}
 
 	if !ok {
-		return user.NewRegisterNotFound()
+		// TODO log error before return
+		return user.NewLoginNotFound().WithPayload("Wrong login/password")
 	}
 
 	token, err := auth.GenerateJWT(*params.Login.Login)
 	if err != nil {
-		return user.NewLoginInternalServerError().WithPayload("Error defining token")
+		// TODO log error before return
+		return user.NewLoginInternalServerError().WithPayload("Error when generating the token")
 	}
 	return user.NewLoginOK().WithPayload(&models.LoginSuccess{Success: true, Token: token})
 }

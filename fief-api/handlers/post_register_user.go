@@ -23,7 +23,7 @@ func NewUserRegisterHandler(db *bolt.DB) user.RegisterHandler {
 func (impl *registerImpl) Handle(params user.RegisterParams) middleware.Responder {
 	err := auth.RegisterNewUser(impl.dbClient, params.Signup)
 	if err != nil {
-		// TODO have a better error message
+		// TODO log error before return
 		return user.NewRegisterInternalServerError().WithPayload(fmt.Sprintf("Error registering user: %s", err))
 	}
 	return user.NewRegisterOK().WithPayload(&models.SuccessResponse{Success: true, Message: "User Registered successfully"})

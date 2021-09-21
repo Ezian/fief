@@ -18,8 +18,11 @@ func NewClientBuilder() ClientBuilder {
 func (b ClientBuilder) BuildBoltClient() *bolt.DB {
 	// Open the my.db data file in your current directory.
 	// It will be created if it doesn't exist.
-	// TODO set auth db file as configuration
+	// TODO set auth db file as configuration/environment variable
 	db, err := bolt.Open("auth.db", 0600, nil)
+	if err != nil {
+		log.Fatal("Cannot open auth database : ", err.Error())
+	}
 
 	// Prepare db with each required buckets
 	err = db.Update(func(tx *bolt.Tx) error {

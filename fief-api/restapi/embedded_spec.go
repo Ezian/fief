@@ -208,12 +208,6 @@ func init() {
           "400": {
             "description": "Bad Request"
           },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
-          },
           "500": {
             "description": "Server error",
             "schema": {
@@ -525,12 +519,6 @@ func init() {
           },
           "400": {
             "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
           },
           "500": {
             "description": "Server error",

@@ -104,11 +104,13 @@ func CheckUserPassword(db *bolt.DB, login, password string) (bool, error) {
 		return nil
 	})
 	if err != nil {
+		// TODO Wrap error in a correct way
 		return false, err
 	}
 
 	err = bcrypt.CompareHashAndPassword(dbPassword, []byte(password))
 	if err != nil {
+		// TODO Log with logger (it's an expected behavior, so maybe just a warning for wrong authentication)
 		fmt.Println(err)
 		return false, nil
 	}

@@ -81,48 +81,6 @@ func (o *RegisterBadRequest) WriteResponse(rw http.ResponseWriter, producer runt
 	rw.WriteHeader(400)
 }
 
-// RegisterNotFoundCode is the HTTP code returned for type RegisterNotFound
-const RegisterNotFoundCode int = 404
-
-/*RegisterNotFound User not found
-
-swagger:response registerNotFound
-*/
-type RegisterNotFound struct {
-
-	/*
-	  In: Body
-	*/
-	Payload string `json:"body,omitempty"`
-}
-
-// NewRegisterNotFound creates RegisterNotFound with default headers values
-func NewRegisterNotFound() *RegisterNotFound {
-
-	return &RegisterNotFound{}
-}
-
-// WithPayload adds the payload to the register not found response
-func (o *RegisterNotFound) WithPayload(payload string) *RegisterNotFound {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the register not found response
-func (o *RegisterNotFound) SetPayload(payload string) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *RegisterNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(404)
-	payload := o.Payload
-	if err := producer.Produce(rw, payload); err != nil {
-		panic(err) // let the recovery middleware deal with this
-	}
-}
-
 // RegisterInternalServerErrorCode is the HTTP code returned for type RegisterInternalServerError
 const RegisterInternalServerErrorCode int = 500
 
