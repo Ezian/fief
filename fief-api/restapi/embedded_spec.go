@@ -205,9 +205,6 @@ func init() {
               "$ref": "#/definitions/SuccessResponse"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "500": {
             "description": "Server error",
             "schema": {
@@ -244,11 +241,8 @@ func init() {
               "$ref": "#/definitions/LoginSuccess"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
+          "401": {
+            "description": "Wrong Login/Password",
             "schema": {
               "type": "string"
             }
@@ -517,9 +511,6 @@ func init() {
               "$ref": "#/definitions/SuccessResponse"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "500": {
             "description": "Server error",
             "schema": {
@@ -556,11 +547,8 @@ func init() {
               "$ref": "#/definitions/LoginSuccess"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
+          "401": {
+            "description": "Wrong Login/Password",
             "schema": {
               "type": "string"
             }

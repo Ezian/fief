@@ -2,9 +2,10 @@ package auth
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/boltdb/bolt"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 type ClientBuilder struct {
@@ -21,28 +22,28 @@ func (b ClientBuilder) BuildBoltClient() *bolt.DB {
 	// TODO set auth db file as configuration/environment variable
 	db, err := bolt.Open("auth.db", 0600, nil)
 	if err != nil {
-		log.Fatal("Cannot open auth database : ", err.Error())
+		log.Fatalf("Cannot open auth database : %+v", err)
 	}
 
 	// Prepare db with each required buckets
 	err = db.Update(func(tx *bolt.Tx) error {
 		userBucket, err := tx.CreateBucketIfNotExists([]byte(USERS_BUCKET))
 		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+			return errors.Wrap(err, fmt.Sprintf("cannot create bucket '%s'", USERS_BUCKET))
 		}
 		_, err = userBucket.CreateBucketIfNotExists([]byte(USERS_AUTH_BUCKET))
 		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+			return errors.Wrap(err, fmt.Sprintf("cannot create bucket '%s/%s'", USERS_BUCKET, USERS_AUTH_BUCKET))
 		}
 		_, err = userBucket.CreateBucketIfNotExists([]byte(USERS_INFOS_BUCKET))
 		if err != nil {
-			return fmt.Errorf("create bucket: %s", err)
+			return errors.Wrap(err, fmt.Sprintf("cannot create bucket '%s/%s'", USERS_BUCKET, USERS_INFOS_BUCKET))
 		}
 		return nil
 	})
 
 	if err != nil {
-		log.Fatal("error connecting DB : ", err.Error())
+		log.Fatalf("Cannot create basic structure of the Database : %+v", err)
 	}
 	return db
 }

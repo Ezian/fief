@@ -24,8 +24,7 @@ func GenerateJWT(userLogin string) (string, error) {
 
 	tokenString, err := token.SignedString([]byte(mySecretKeyForJWT))
 	if err != nil {
-		// TODO Wrap error in a correct way
-		return "", err
+		return "", errors.Wrap(err, "cannot create JWT signed token")
 	}
 	return tokenString, nil
 }
@@ -35,14 +34,12 @@ func ValidateHeader(bearerHeader string) (interface{}, error) {
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(bearerToken, claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			// TODO Handle the error correctly
-			return nil, fmt.Errorf("error decoding token")
+			return nil, fmt.Errorf("mismatching signing method")
 		}
 		return []byte(mySecretKeyForJWT), nil
 	})
 	if err != nil {
-		// TODO Handle the error correctly
-		return nil, err
+		return nil, errors.Wrap(err, "cannot decode the token")
 	}
 	if token.Valid {
 		return claims["login"].(string), nil

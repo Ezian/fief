@@ -57,30 +57,6 @@ func (o *RegisterOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	}
 }
 
-// RegisterBadRequestCode is the HTTP code returned for type RegisterBadRequest
-const RegisterBadRequestCode int = 400
-
-/*RegisterBadRequest Bad Request
-
-swagger:response registerBadRequest
-*/
-type RegisterBadRequest struct {
-}
-
-// NewRegisterBadRequest creates RegisterBadRequest with default headers values
-func NewRegisterBadRequest() *RegisterBadRequest {
-
-	return &RegisterBadRequest{}
-}
-
-// WriteResponse to the client
-func (o *RegisterBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
-	rw.WriteHeader(400)
-}
-
 // RegisterInternalServerErrorCode is the HTTP code returned for type RegisterInternalServerError
 const RegisterInternalServerErrorCode int = 500
 

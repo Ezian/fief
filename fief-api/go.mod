@@ -15,6 +15,7 @@ require (
 	github.com/go-openapi/validate v0.20.2
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/pkg/errors v0.9.1
+	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272
 	golang.org/x/net v0.0.0-20210917221730-978cfadd31cf
 )

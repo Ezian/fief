@@ -7,6 +7,7 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -88,7 +89,6 @@ func safeGetUsersSubBucket(bucket *bolt.Bucket, subKey string, userKey []byte) (
 
 func CheckUserPassword(db *bolt.DB, login, password string) (bool, error) {
 
-	// TODO get password from DB
 	var dbPassword []byte
 	err := db.View(func(tx *bolt.Tx) error {
 		usersBucket := tx.Bucket([]byte(USERS_BUCKET))
@@ -104,14 +104,12 @@ func CheckUserPassword(db *bolt.DB, login, password string) (bool, error) {
 		return nil
 	})
 	if err != nil {
-		// TODO Wrap error in a correct way
-		return false, err
+		return false, errors.Wrap(err, "cannot retrieve user password")
 	}
 
 	err = bcrypt.CompareHashAndPassword(dbPassword, []byte(password))
 	if err != nil {
-		// TODO Log with logger (it's an expected behavior, so maybe just a warning for wrong authentication)
-		fmt.Println(err)
+		log.WithError(err).WithField("login", login).Info("Authentication failure.")
 		return false, nil
 	}
 	return true, nil
