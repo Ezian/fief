@@ -7,7 +7,7 @@ content-type: application/json
   "password": "mgzkleghmksdjbgnmkdsjbgnqzebjnzeqbjgqzejgzeqjk"
 }
 ###
-
+# @name login
 POST http://127.0.0.1:8080/v1/signin
 content-type: application/json
 
@@ -15,3 +15,12 @@ content-type: application/json
   "login": "Eole",
   "password": "mgzkleghmksdjbgnmkdsjbgnqzebjnzeqbjgqzejgzeqjk"
 }
+
+###
+@token= {{login.response.body.token}}
+
+###
+GET http://127.0.0.1:8080/v1/games
+Accept: application/json
+content-type: application/json
+Authorization: Bearer {{token}}
