@@ -8,6 +8,7 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/go-openapi/runtime/middleware"
+	log "github.com/sirupsen/logrus"
 )
 
 type registerImpl struct {
@@ -21,11 +22,12 @@ func NewUserRegisterHandler(db *bolt.DB) user.RegisterHandler {
 }
 
 func (impl *registerImpl) Handle(params user.RegisterParams) middleware.Responder {
+	log := log.WithField("login", *params.Signup.Login).WithField("email", *params.Signup.Email)
 	err := auth.RegisterNewUser(impl.dbClient, params.Signup)
 	if err != nil {
-		// TODO have a better error message
+		log.WithError(err).Error("Error registering user")
 		return user.NewRegisterInternalServerError().WithPayload(fmt.Sprintf("Error registering user: %s", err))
 	}
+	log.Info("Register user successful")
 	return user.NewRegisterOK().WithPayload(&models.SuccessResponse{Success: true, Message: "User Registered successfully"})
-
 }

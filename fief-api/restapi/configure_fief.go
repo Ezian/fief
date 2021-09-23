@@ -18,17 +18,16 @@ import (
 	"fief/restapi/operations/user"
 )
 
-//go:generate swagger generate server --target ../../fief-api --name FiefDiplomatieAPI --spec ../swagger.yml --principal interface{}
+//go:generate swagger generate server --target ../../fief-api --name Fief --spec ../swagger.yml --principal interface{}
 
-func configureFlags(api *operations.FiefDiplomatieAPIAPI) {
+func configureFlags(api *operations.FiefAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
-func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
+func configureAPI(api *operations.FiefAPI) http.Handler {
 	clientBuilder := auth.NewClientBuilder()
 
 	authDbClient := clientBuilder.BuildBoltClient()
-
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -47,11 +46,7 @@ func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "Authorization" header is set
-	if api.BearerAuth == nil {
-		api.BearerAuth = func(token string) (interface{}, error) {
-			return nil, errors.NotImplemented("api key auth (Bearer) Authorization from header param [Authorization] has not yet been implemented")
-		}
-	}
+	api.BearerAuth = auth.ValidateHeader
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
 	// Expected interface runtime.Authorizer
@@ -74,11 +69,7 @@ func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
 			return middleware.NotImplemented("operation game.GetGamesIDStatus has not yet been implemented")
 		})
 	}
-	if api.UserLoginHandler == nil {
-		api.UserLoginHandler = user.LoginHandlerFunc(func(params user.LoginParams) middleware.Responder {
-			return middleware.NotImplemented("operation user.Login has not yet been implemented")
-		})
-	}
+
 	if api.GamePostGamesIDInstructionsHandler == nil {
 		api.GamePostGamesIDInstructionsHandler = game.PostGamesIDInstructionsHandlerFunc(func(params game.PostGamesIDInstructionsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation game.PostGamesIDInstructions has not yet been implemented")
@@ -95,7 +86,15 @@ func configureAPI(api *operations.FiefDiplomatieAPIAPI) http.Handler {
 		})
 	}
 
+	api.UserLoginHandler = handlers.NewUserLoginHandler(authDbClient)
+
 	api.UserRegisterHandler = handlers.NewUserRegisterHandler(authDbClient)
+
+	if api.UserRegisterHandler == nil {
+		api.UserRegisterHandler = user.RegisterHandlerFunc(func(params user.RegisterParams) middleware.Responder {
+			return middleware.NotImplemented("operation user.Register has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 

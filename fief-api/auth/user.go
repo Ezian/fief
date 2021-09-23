@@ -7,6 +7,7 @@ import (
 
 	"github.com/boltdb/bolt"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -84,4 +85,32 @@ func safeGetUsersSubBucket(bucket *bolt.Bucket, subKey string, userKey []byte) (
 		return nil, fmt.Errorf("user with login %q already registered", string(userKey))
 	}
 	return subBucket, nil
+}
+
+func CheckUserPassword(db *bolt.DB, login, password string) (bool, error) {
+
+	var dbPassword []byte
+	err := db.View(func(tx *bolt.Tx) error {
+		usersBucket := tx.Bucket([]byte(USERS_BUCKET))
+		if usersBucket == nil {
+			return fmt.Errorf("no bucket %q", USERS_BUCKET)
+		}
+		authBucket := usersBucket.Bucket([]byte(USERS_AUTH_BUCKET))
+		if usersBucket == nil {
+			return fmt.Errorf("no bucket %q", USERS_AUTH_BUCKET)
+		}
+
+		dbPassword = authBucket.Get([]byte(login))
+		return nil
+	})
+	if err != nil {
+		return false, errors.Wrap(err, "cannot retrieve user password")
+	}
+
+	err = bcrypt.CompareHashAndPassword(dbPassword, []byte(password))
+	if err != nil {
+		log.WithError(err).WithField("login", login).Info("Authentication failure.")
+		return false, nil
+	}
+	return true, nil
 }

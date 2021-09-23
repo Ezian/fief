@@ -205,15 +205,6 @@ func init() {
               "$ref": "#/definitions/SuccessResponse"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
-          },
           "500": {
             "description": "Server error",
             "schema": {
@@ -235,23 +226,64 @@ func init() {
         "operationId": "Login",
         "parameters": [
           {
-            "name": "credentials",
+            "name": "Login",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/credentials"
+              "$ref": "#/definitions/LoginInfo"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Todo"
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "LoginInfo": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginSuccess": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
     "RegisterUser": {
       "type": "object",
       "required": [
@@ -279,21 +311,6 @@ func init() {
         },
         "success": {
           "type": "boolean"
-        }
-      }
-    },
-    "credentials": {
-      "type": "object",
-      "required": [
-        "login",
-        "password"
-      ],
-      "properties": {
-        "login": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
         }
       }
     }
@@ -494,15 +511,6 @@ func init() {
               "$ref": "#/definitions/SuccessResponse"
             }
           },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "type": "string"
-            }
-          },
           "500": {
             "description": "Server error",
             "schema": {
@@ -524,23 +532,64 @@ func init() {
         "operationId": "Login",
         "parameters": [
           {
-            "name": "credentials",
+            "name": "Login",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/credentials"
+              "$ref": "#/definitions/LoginInfo"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Todo"
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "LoginInfo": {
+      "type": "object",
+      "required": [
+        "login",
+        "password"
+      ],
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginSuccess": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
     "RegisterUser": {
       "type": "object",
       "required": [
@@ -568,21 +617,6 @@ func init() {
         },
         "success": {
           "type": "boolean"
-        }
-      }
-    },
-    "credentials": {
-      "type": "object",
-      "required": [
-        "login",
-        "password"
-      ],
-      "properties": {
-        "login": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
         }
       }
     }
