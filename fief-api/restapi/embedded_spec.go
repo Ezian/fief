@@ -35,6 +35,82 @@ func init() {
   },
   "basePath": "/v1",
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "description": "Signin with login/password and retrieve JWT token for further requests",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "Login",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/games": {
       "get": {
         "security": [
@@ -176,82 +252,6 @@ func init() {
         "responses": {
           "200": {
             "description": "TODO"
-          }
-        }
-      }
-    },
-    "/register": {
-      "post": {
-        "description": "Register a new user",
-        "tags": [
-          "user"
-        ],
-        "operationId": "Register",
-        "parameters": [
-          {
-            "description": "Registration payload",
-            "name": "signup",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegisterUser"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful registration",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/signin": {
-      "post": {
-        "description": "Signin with login/password and retrieve JWT token for further requests",
-        "consumes": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "operationId": "Login",
-        "parameters": [
-          {
-            "name": "Login",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginInfo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "401": {
-            "description": "Wrong Login/Password",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
           }
         }
       }
@@ -341,6 +341,82 @@ func init() {
   },
   "basePath": "/v1",
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "description": "Signin with login/password and retrieve JWT token for further requests",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "Login",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/games": {
       "get": {
         "security": [
@@ -482,82 +558,6 @@ func init() {
         "responses": {
           "200": {
             "description": "TODO"
-          }
-        }
-      }
-    },
-    "/register": {
-      "post": {
-        "description": "Register a new user",
-        "tags": [
-          "user"
-        ],
-        "operationId": "Register",
-        "parameters": [
-          {
-            "description": "Registration payload",
-            "name": "signup",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegisterUser"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful registration",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/signin": {
-      "post": {
-        "description": "Signin with login/password and retrieve JWT token for further requests",
-        "consumes": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "operationId": "Login",
-        "parameters": [
-          {
-            "name": "Login",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginInfo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "401": {
-            "description": "Wrong Login/Password",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
           }
         }
       }

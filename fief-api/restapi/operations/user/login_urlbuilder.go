@@ -35,7 +35,7 @@ func (o *LoginURL) SetBasePath(bp string) {
 func (o *LoginURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/signin"
+	var _path = "/auth/signin"
 
 	_basePath := o._basePath
 	if _basePath == "" {

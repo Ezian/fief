@@ -14,7 +14,7 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:
-  /register:
+  /auth/signup:
     post:
       description: Register a new user
       tags: [user]
@@ -35,7 +35,7 @@ paths:
           schema:
             type: string
           description: Server error
-  /signin:
+  /auth/signin:
     post:
       tags: [user]
       operationId: Login

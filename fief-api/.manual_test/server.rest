@@ -1,4 +1,4 @@
-POST http://127.0.0.1:8080/v1/register
+POST http://127.0.0.1:8080/v1/auth/signup
 content-type: application/json
 
 {
@@ -8,7 +8,7 @@ content-type: application/json
 }
 ###
 # @name login
-POST http://127.0.0.1:8080/v1/signin
+POST http://127.0.0.1:8080/v1/auth/signin
 content-type: application/json
 
 {

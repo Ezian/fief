@@ -29,7 +29,7 @@ func NewRegister(ctx *middleware.Context, handler RegisterHandler) *Register {
 	return &Register{Context: ctx, Handler: handler}
 }
 
-/* Register swagger:route POST /register user register
+/* Register swagger:route POST /auth/signup user register
 
 Register a new user
 
