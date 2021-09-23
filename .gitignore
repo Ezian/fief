@@ -1,4 +1,4 @@
 fief-api/auth.db
-fief-api/fief-diplomatie-api-server
 auth.db
 fief-api/fief-server
+**/node_modules
