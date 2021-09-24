@@ -55,7 +55,7 @@ class AuthService {
       login: loginInfo.login,
       password: loginInfo.password
     })
-    let response = anyResponse.data as LoginSuccess
+    const response = anyResponse.data as LoginSuccess
     if (response.success && response.token) {
       localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN_KEY, JSON.stringify(response.token))
     }
