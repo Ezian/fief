@@ -1,3 +1,4 @@
+import { UserInfos } from "@/types/users"
 import axios from "axios"
 import jwtDecode from "jwt-decode"
 import { API_URL, LOCAL_STORAGE_AUTH_TOKEN_KEY, LOCAL_STORAGE_USER_INFO_KEY } from "./auth.constants"
@@ -38,10 +39,6 @@ export type SuccessResponse = {
   message: string,
 }
 
-export type UserInfo = {
-  login: string,
-}
-
 type JwtAuthPayload = {
   authorized: boolean,
   login: string,
@@ -70,7 +67,7 @@ class AuthService {
     if (response.success && response.token) {
       localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN_KEY, JSON.stringify(response.token))
       const decoded = jwtDecode<JwtAuthPayload>(response.token)
-      const userInfo: UserInfo = {
+      const userInfo: UserInfos = {
         login: decoded.login
       }
       localStorage.setItem(LOCAL_STORAGE_USER_INFO_KEY, JSON.stringify(userInfo))
@@ -104,12 +101,12 @@ class AuthService {
     return !!localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
   }
   
-  loggedUserInfo(): UserInfo{
+  loggedUserInfo(): UserInfos{
     const stored = localStorage.getItem(LOCAL_STORAGE_USER_INFO_KEY)
     if(!stored){
-      return {} as UserInfo
+      return {} as UserInfos
     }
-    return JSON.parse(stored) as UserInfo
+    return JSON.parse(stored) as UserInfos
   }
 
 }
