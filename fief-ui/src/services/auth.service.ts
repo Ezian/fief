@@ -1,6 +1,6 @@
 import axios from "axios"
-import { boolean } from "yup"
-import { API_URL, LOCAL_STORAGE_AUTH_TOKEN_KEY } from "./auth.constants"
+import jwtDecode from "jwt-decode"
+import { API_URL, LOCAL_STORAGE_AUTH_TOKEN_KEY, LOCAL_STORAGE_USER_INFO_KEY } from "./auth.constants"
 
 const SIGNIN_PATH = 'auth/signin'
 const SIGNUP_PATH = 'auth/signup'
@@ -38,6 +38,16 @@ export type SuccessResponse = {
   message: string,
 }
 
+export type UserInfo = {
+  login: string,
+}
+
+type JwtAuthPayload = {
+  authorized: boolean,
+  login: string,
+  exp: number,
+}
+
 /**
  * Handle user registration and authentication
  */
@@ -59,6 +69,11 @@ class AuthService {
     const response = anyResponse.data as LoginSuccess
     if (response.success && response.token) {
       localStorage.setItem(LOCAL_STORAGE_AUTH_TOKEN_KEY, JSON.stringify(response.token))
+      const decoded = jwtDecode<JwtAuthPayload>(response.token)
+      const userInfo: UserInfo = {
+        login: decoded.login
+      }
+      localStorage.setItem(LOCAL_STORAGE_USER_INFO_KEY, JSON.stringify(userInfo))
     }
     return response
   }
@@ -68,6 +83,7 @@ class AuthService {
    */
   logout(): void {
     localStorage.removeItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+    localStorage.removeItem(LOCAL_STORAGE_USER_INFO_KEY)
   }
 
 /**
@@ -86,6 +102,14 @@ class AuthService {
 
   isLogged(): boolean{
     return !!localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
+  }
+  
+  loggedUserInfo(): UserInfo{
+    const stored = localStorage.getItem(LOCAL_STORAGE_USER_INFO_KEY)
+    if(!stored){
+      return {} as UserInfo
+    }
+    return JSON.parse(stored) as UserInfo
   }
 
 }

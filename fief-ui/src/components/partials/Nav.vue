@@ -15,7 +15,7 @@
       <router-link to="/" class="navbar-item">Games</router-link>
       <router-link to="/about" class="navbar-item">About</router-link>
     </div>
-    <div class="navbar-end">
+    <div v-if="!isLogged()" class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
           <router-link to="/signin" class="button is-dark">
@@ -31,14 +31,41 @@
         </div>
       </div>
     </div>
+    <div v-if="isLogged()" class="navbar-end">
+      <div class="navbar-item">
+        Logged as {{  userName() }}
+      </div>
+      <div class="navbar-item">
+        <div class="buttons">
+          <button class="button is-danger" @click="logout()">
+            <font-awesome-icon icon="sign-out-alt" />
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
 </template>
 <script lang="ts">
-export default {
-    name: 'Nav'
-}
+import authService from "@/services/auth.service"
+import { defineComponent } from "@vue/runtime-core"
+
+export default  defineComponent({
+    name: 'Nav',
+    methods: {
+      isLogged(): boolean{
+        return authService.isLogged();
+      },
+      userName(): string{
+        return authService.loggedUserInfo().login;
+      },
+      logout(): void{
+        authService.logout()
+      }
+    }
+});
 </script>
+
 <style scoped>
   nav {
     margin-top: 25px;
