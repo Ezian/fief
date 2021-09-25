@@ -3,7 +3,7 @@ info:
   description: API of the server for Fief Diplomatie
   title: Fief Diplomatie API
   version: 1.0.0
-basePath: /v1
+basePath: /api/v1
 consumes: ["application/json"]
 produces: ["application/json"]
 schemes: ["http"]

@@ -33,7 +33,7 @@ func init() {
     "title": "Fief Diplomatie API",
     "version": "1.0.0"
   },
-  "basePath": "/v1",
+  "basePath": "/api/v1",
   "paths": {
     "/auth/signin": {
       "post": {
@@ -339,7 +339,7 @@ func init() {
     "title": "Fief Diplomatie API",
     "version": "1.0.0"
   },
-  "basePath": "/v1",
+  "basePath": "/api/v1",
   "paths": {
     "/auth/signin": {
       "post": {
