@@ -1,4 +1,5 @@
 import axios from "axios"
+import { boolean } from "yup"
 import { API_URL, LOCAL_STORAGE_AUTH_TOKEN_KEY } from "./auth.constants"
 
 const SIGNIN_PATH = 'auth/signin'
@@ -81,6 +82,10 @@ class AuthService {
       password: user.password,
       login: user.login,
     })
+  }
+
+  isLogged(): boolean{
+    return !!localStorage.getItem(LOCAL_STORAGE_AUTH_TOKEN_KEY)
   }
 
 }
