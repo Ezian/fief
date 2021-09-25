@@ -6,10 +6,10 @@
         <div class="column is-5-tablet is-4-desktop is-3-widescreen  box ">
           <Form @submit="handleLogin" :validation-schema="schema">
             <div class="field">
-              <label for="username" class="label">Login</label>
+              <label for="login" class="label">Login</label>
               <div class="control has-icons-left">                
-                <Field name="username" type="text" class="input" required />
-                <ErrorMessage name="username" class="is-warning" />
+                <Field name="login" type="text" class="input" required />
+                <ErrorMessage name="login" class="is-warning" />
                 <span class="icon is-small is-left">
                   <font-awesome-icon icon="user" />
                 </span>
@@ -60,7 +60,7 @@ export default defineComponent({
   },
   data(){
     const schema = yup.object().shape({
-      username: yup.string().required("Username is required!"),
+      login: yup.string().required("login is required!"),
       password: yup.string().required("Password is required!"),
     });
 

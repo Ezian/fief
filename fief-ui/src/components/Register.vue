@@ -8,10 +8,10 @@
           <Form @submit="handleRegister" :validation-schema="schema">
             <div v-if="!successful">
               <div class="field">
-                <label for="username" class="label">Login</label>
+                <label for="login" class="label">Login</label>
                 <div class="control has-icons-left">                
-                  <Field name="username" type="text" class="input" required />
-                  <ErrorMessage name="username" class="is-warning" />
+                  <Field name="login" type="text" class="input" required />
+                  <ErrorMessage name="login" class="is-warning" />
                   <span class="icon is-small is-left">
                     <font-awesome-icon icon="user" />
                   </span>
@@ -78,9 +78,9 @@ export default defineComponent({
   },
   data() {
     const schema = yup.object().shape({
-      username: yup
+      login: yup
         .string()
-        .required("Username is required!")
+        .required("login is required!")
         .min(3, "Must be at least 3 characters!")
         .max(20, "Must be maximum 20 characters!"),
       email: yup
