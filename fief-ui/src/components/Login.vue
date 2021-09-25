@@ -1,41 +1,45 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <Form @submit="handleLogin" :validation-schema="schema">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen  box ">
+          <Form @submit="handleLogin" :validation-schema="schema">
+            <div class="field">
+              <label for="username" class="label">Login</label>
+              <div class="control has-icons-left">                
+                <Field name="username" type="text" class="input" required />
+                <ErrorMessage name="username" class="is-warning" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="password" class="label">Password</label>                  
+              <div class="control has-icons-left">
+              <Field name="password" placeholder="*******" type="password" class="input" required />
+              <ErrorMessage name="password" class="is-warning" />
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <button class="button is-success" :disabled="loading">
+              <span
+                v-show="loading"
+                class="spinner-border spinner-border-sm"
+              ></span>
+              <span>Login</span>
+              </button>
+              <div v-if="message" class="notification is-warning" role="alert">
+                {{ message }}
+              </div>
+            </div>
+          </Form>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
-        </div>
-
-        <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
-            <span
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-            ></span>
-            <span>Login</span>
-          </button>
-        </div>
-
-        <div class="form-group">
-          <div v-if="message" class="alert alert-danger" role="alert">
-            {{ message }}
-          </div>
-        </div>
-      </Form>
+      </div>
     </div>
   </div>
+</section>
 </template>
 
 <script lang="ts">
