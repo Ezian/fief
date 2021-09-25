@@ -1,50 +1,66 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <Form @submit="handleRegister" :validation-schema="schema">
-        <div v-if="!successful">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
-          </div>
 
-          <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
-              <span
-                v-show="loading"
-                class="spinner-border spinner-border-sm"
-              ></span>
-              Sign Up
-            </button>
+<section class="hero  is-dark">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen  box ">
+          <Form @submit="handleRegister" :validation-schema="schema">
+            <div v-if="!successful">
+              <div class="field">
+                <label for="username" class="label">Login</label>
+                <div class="control has-icons-left">                
+                  <Field name="username" type="text" class="input" required />
+                  <ErrorMessage name="username" class="is-warning" />
+                  <span class="icon is-small is-left">
+                    <font-awesome-icon icon="user" />
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="email" class="label">Email</label>
+                <div class="control has-icons-left">                
+                  <Field name="email" type="email" class="input" required />
+                  <ErrorMessage name="email" class="is-warning" />
+                  <span class="icon is-small is-left">
+                    <font-awesome-icon icon="envelope" />
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="password" class="label">Password</label>                  
+                <div class="control has-icons-left">
+                <Field name="password" placeholder="*******" type="password" class="input" required />
+                <ErrorMessage name="password" class="is-warning" />
+                  <span class="icon is-small is-left">
+                    <font-awesome-icon icon="lock" />
+                  </span>
+                </div>
+              </div>
+              <div class="field">
+                <button class="button is-success" :disabled="loading">
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm"
+                ></span>
+                <span>Sign Up</span>
+                </button>
+              </div>
+            </div>
+          </Form>
+              
+          <div
+            v-if="message"
+            class="alert"
+            :class="successful ? 'is-success' : 'is-danger'"
+          >
+            {{ message }}
           </div>
         </div>
-      </Form>
-
-      <div
-        v-if="message"
-        class="alert"
-        :class="successful ? 'alert-success' : 'alert-danger'"
-      >
-        {{ message }}
       </div>
     </div>
   </div>
+</section>
 </template>
 
 <script lang="ts">
