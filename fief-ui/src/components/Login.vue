@@ -10,6 +10,9 @@
               <div class="control has-icons-left">                
                 <Field name="username" type="text" class="input" required />
                 <ErrorMessage name="username" class="is-warning" />
+                <span class="icon is-small is-left">
+                  <font-awesome-icon icon="user" />
+                </span>
               </div>
             </div>
             <div class="field">
@@ -18,7 +21,7 @@
               <Field name="password" placeholder="*******" type="password" class="input" required />
               <ErrorMessage name="password" class="is-warning" />
                 <span class="icon is-small is-left">
-                  <i class="fa fa-lock"></i>
+                  <font-awesome-icon icon="lock" />
                 </span>
               </div>
             </div>
