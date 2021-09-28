@@ -3,7 +3,7 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-const users = [{ id: 1, username: 'test', password: 'test', firstName: 'Test', lastName: 'User' }];
+let users = [{ username: 'test', password: 'test', email: 'test@test.com' }];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -19,14 +19,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function handleRoute() {
             switch (true) {
-                case url.endsWith('/users/authenticate') && method === 'POST':
+                case url.endsWith('/auth/signin') && method === 'POST':
                     return authenticate();
+                case url.endsWith('/auth/signup') && method === 'POST':
+                      return signup();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
-            }    
+            }
         }
 
         // route functions
@@ -36,13 +38,23 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const user = users.find(x => x.username === username && x.password === password);
             if (!user) return error('Username or password is incorrect');
             return ok({
-                id: user.id,
-                username: user.username,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                token: 'fake-jwt-token'
+              username: user.username,
+              email: user.email,
+              token: 'fake-jwt-token'
             })
         }
+
+
+        function signup() {
+          const { username, password, email } = body;
+          const user = users.find(x => x.username === username);
+          if (!!user) return error('User already exists');
+          users.push({username:username, email: email, password: password})
+          return ok({
+            message: 'User created'
+          })
+      }
+
 
         function getUsers() {
             if (!isLoggedIn()) return unauthorized();
