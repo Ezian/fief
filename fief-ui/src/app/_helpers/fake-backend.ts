@@ -81,6 +81,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 }
 
+
+@Injectable()
+export class TrueBackEndInterceptor implements HttpInterceptor {
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(request)
+  }
+}
+
 export let fakeBackendProvider = {
     // use fake backend in place of Http service for backend-less development
     provide: HTTP_INTERCEPTORS,

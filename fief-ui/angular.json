@@ -33,6 +33,14 @@
             "scripts": []
           },
           "configurations": {
+            "fake":{
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.fake.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -71,6 +79,9 @@
           "configurations": {
             "production": {
               "browserTarget": "fief-ui:build:production"
+            },
+            "fake": {
+              "browserTarget": "fief-ui:build:fake"
             }
           }
         },

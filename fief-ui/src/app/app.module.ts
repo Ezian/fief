@@ -13,6 +13,18 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';;
 import { RegisterComponent } from './register/register.component'
+import { environment } from '@environments/environment';
+
+function providers(){
+  let providers: any = [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ]
+  if (environment.noBack){
+    providers.push(fakeBackendProvider)
+  }
+  return providers;
+}
 
 @NgModule({
     imports: [
@@ -27,13 +39,8 @@ import { RegisterComponent } from './register/register.component'
         LoginComponent
 ,
         RegisterComponent    ],
-    providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-        // provider used to create fake backend
-        fakeBackendProvider
-    ],
+    providers: providers(),
     bootstrap: [AppComponent]
 })
+
 export class AppModule { }

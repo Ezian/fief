@@ -1,10 +1,11 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// This file can be replaced during build or serve by using the `fileReplacements` array.
+// `ng build -c production` `ng serve -c fake` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+// It will generate a fake backend using _helpers/fake-backend.ts
 
 export const environment = {
   production: false,
-  noBack: false,
+  noBack: true,
   apiUrl: 'http://localhost:3000/api/v1'
 };
 

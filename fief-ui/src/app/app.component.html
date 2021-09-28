@@ -9,6 +9,7 @@
       <a class="nav-item nav-link" *ngIf="!currentUser" routerLink="/signup" >Sign Up</a>
     </div>
 </nav>
+<div *ngIf="fake" class="alert alert-danger ">Using a fake backend. You can always login with login: test / password: test</div>
 
 <!-- main app container -->
 <div class="container">
