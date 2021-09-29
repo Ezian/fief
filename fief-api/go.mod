@@ -4,8 +4,6 @@ go 1.13
 
 require (
 	github.com/boltdb/bolt v1.3.1
-	github.com/br0xen/boltbrowser v0.0.0-20210531150353-7f10a81cece0 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-openapi/errors v0.20.1
 	github.com/go-openapi/loads v0.20.2
 	github.com/go-openapi/runtime v0.19.31
@@ -13,6 +11,7 @@ require (
 	github.com/go-openapi/strfmt v0.20.2
 	github.com/go-openapi/swag v0.19.15
 	github.com/go-openapi/validate v0.20.2
+	github.com/golang-jwt/jwt v3.2.1+incompatible
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/cors v1.8.0
