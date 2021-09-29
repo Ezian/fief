@@ -2,6 +2,8 @@
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
+import sign from 'jwt-encode'
+import { LoginSuccess } from '@app/_services';
 
 let users = [{ username: 'test', password: 'test', email: 'test@test.com' }];
 
@@ -34,14 +36,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         // route functions
 
         function authenticate() {
-            const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
+            const { login, password } = body;
+            const user = users.find(x => x.username === login && x.password === password);
             if (!user) return error('Username or password is incorrect');
-            return ok({
-              username: user.username,
-              email: user.email,
-              token: 'fake-jwt-token'
-            })
+            const token = sign({
+              authorized: true,
+              login: login,
+              exp: new Date(Date.now() + ( 3600 * 1000 * 24))
+            }, "fake-secrets")
+            return ok({token: token} as LoginSuccess)
         }
 
 

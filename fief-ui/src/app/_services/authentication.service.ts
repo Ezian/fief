@@ -2,9 +2,25 @@
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import jwt_decode from "jwt-decode";
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+
+export type LoginInfo = {
+  login: string,
+  password: string,
+}
+
+export type LoginSuccess = {
+  token: string,
+}
+
+export type JWTClaims = {
+  authorized: boolean,
+  login: string,
+  exp: Date
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -21,8 +37,13 @@ export class AuthenticationService {
     }
 
     login(username: string, password: string) {
-        return this.http.post<any>(`${environment.apiUrl}/auth/signin`, { username, password })
-            .pipe(map(user => {
+        return this.http.post<LoginSuccess>(`${environment.apiUrl}/auth/signin`, { login: username, password } as LoginInfo)
+            .pipe(map(loginSuccess => {
+                const decodedToken = jwt_decode(loginSuccess.token) as JWTClaims
+                const user = {
+                  username: decodedToken.login,
+                  token: loginSuccess.token
+                } as User
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
