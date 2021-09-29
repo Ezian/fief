@@ -5,6 +5,14 @@ import { environment } from '@environments/environment';
 import { User } from '@app/_models';
 import { first, map } from 'rxjs/operators';
 
+
+export type RegisterUser = {
+  login: string,
+  email: string,
+  password: string,
+}
+
+
 @Injectable({ providedIn: 'root' })
 export class UserService {
     constructor(private http: HttpClient) { }
@@ -14,8 +22,8 @@ export class UserService {
     }
 
 
-    register(username: string, email: string, password: string) {
-      return this.http.post<any>(`${environment.apiUrl}/auth/signup`, { username, email, password });
+    register(login: string, email: string, password: string) {
+      return this.http.post<any>(`${environment.apiUrl}/auth/signup`, { login, email, password } as RegisterUser);
     }
 
 }

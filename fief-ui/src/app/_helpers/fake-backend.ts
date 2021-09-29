@@ -5,7 +5,7 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 import sign from 'jwt-encode'
 import { LoginSuccess } from '@app/_services';
 
-let users = [{ username: 'test', password: 'test', email: 'test@test.com' }];
+let users = [{ login: 'test', password: 'test', email: 'test@test.com' }];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -37,22 +37,22 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { login, password } = body;
-            const user = users.find(x => x.username === login && x.password === password);
-            if (!user) return error('Username or password is incorrect');
+            const user = users.find(x => x.login === login && x.password === password);
+            if (!user) return error('login or password is incorrect');
             const token = sign({
               authorized: true,
               login: login,
               exp: new Date(Date.now() + ( 3600 * 1000 * 24))
             }, "fake-secrets")
-            return ok({token: token} as LoginSuccess)
+            return ok({token} as LoginSuccess)
         }
 
 
         function signup() {
-          const { username, password, email } = body;
-          const user = users.find(x => x.username === username);
+          const { login, email, password } = body;
+          const user = users.find(x => x.login === login);
           if (!!user) return error('User already exists');
-          users.push({username:username, email: email, password: password})
+          users.push({login, email, password})
           return ok({
             message: 'User created'
           })
@@ -79,7 +79,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer fake-jwt-token';
+            return headers.get('Authorization').startsWith('Bearer');
         }
     }
 }
