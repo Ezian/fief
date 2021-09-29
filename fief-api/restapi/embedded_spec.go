@@ -65,12 +65,14 @@ func init() {
           "401": {
             "description": "Wrong Login/Password",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           },
           "500": {
             "description": "Server error",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           }
@@ -97,14 +99,19 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Successful registration",
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Registration failure",
             "schema": {
-              "$ref": "#/definitions/SuccessResponse"
+              "description": "Error message",
+              "type": "string"
             }
           },
           "500": {
             "description": "Server error",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           }
@@ -276,9 +283,6 @@ func init() {
     "LoginSuccess": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "token": {
           "type": "string"
         }
@@ -300,17 +304,6 @@ func init() {
         },
         "password": {
           "type": "string"
-        }
-      }
-    },
-    "SuccessResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "success": {
-          "type": "boolean"
         }
       }
     }
@@ -371,12 +364,14 @@ func init() {
           "401": {
             "description": "Wrong Login/Password",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           },
           "500": {
             "description": "Server error",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           }
@@ -403,14 +398,19 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Successful registration",
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Registration failure",
             "schema": {
-              "$ref": "#/definitions/SuccessResponse"
+              "description": "Error message",
+              "type": "string"
             }
           },
           "500": {
             "description": "Server error",
             "schema": {
+              "description": "Error message",
               "type": "string"
             }
           }
@@ -582,9 +582,6 @@ func init() {
     "LoginSuccess": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "token": {
           "type": "string"
         }
@@ -606,17 +603,6 @@ func init() {
         },
         "password": {
           "type": "string"
-        }
-      }
-    },
-    "SuccessResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "success": {
-          "type": "boolean"
         }
       }
     }

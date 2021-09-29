@@ -3,12 +3,12 @@ content-type: application/json
 
 {
   "email": "test@test.com",
-  "login": "Eole",
+  "login": "Eolien",
   "password": "mgzkleghmksdjbgnmkdsjbgnqzebjnzeqbjgqzejgzeqjk"
 }
 ###
 # @name login
-POST http://127.0.0.1:8080/api/v1/auth/signin
+POST http://127.0.0.1:3000/api/v1/auth/signin
 content-type: application/json
 
 {
@@ -20,7 +20,7 @@ content-type: application/json
 @token= {{login.response.body.token}}
 
 ###
-GET http://127.0.0.1:8080/api/v1/games
+GET http://127.0.0.1:3000/api/v1/games
 Accept: application/json
 content-type: application/json
 Authorization: Bearer {{token}}

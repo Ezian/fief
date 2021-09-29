@@ -17,9 +17,6 @@ import (
 // swagger:model LoginSuccess
 type LoginSuccess struct {
 
-	// success
-	Success bool `json:"success,omitempty"`
-
 	// token
 	Token string `json:"token,omitempty"`
 }

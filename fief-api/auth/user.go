@@ -20,6 +20,8 @@ type UserInfos struct {
 	Login string `json:"login"`
 }
 
+var UserAlreadyExists = errors.New("user already registered")
+
 func RegisterNewUser(db *bolt.DB, userInfo *models.RegisterUser) error {
 	err := db.Update(func(tx *bolt.Tx) error {
 		usersBucket := tx.Bucket([]byte(USERS_BUCKET))
@@ -82,7 +84,7 @@ func safeGetUsersSubBucket(bucket *bolt.Bucket, subKey string, userKey []byte) (
 		return nil, fmt.Errorf("no bucket %q in bucket %q", subKey, USERS_BUCKET)
 	}
 	if subBucket.Get(userKey) != nil {
-		return nil, fmt.Errorf("user with login %q already registered", string(userKey))
+		return nil, errors.Wrapf(UserAlreadyExists, "user with login %q already registered", string(userKey))
 	}
 	return subBucket, nil
 }

@@ -39,5 +39,5 @@ func (impl *loginImpl) Handle(params user.LoginParams) middleware.Responder {
 		return user.NewLoginInternalServerError().WithPayload("Error when generating the token")
 	}
 	log.Info("Login Successful")
-	return user.NewLoginOK().WithPayload(&models.LoginSuccess{Success: true, Token: token})
+	return user.NewLoginOK().WithPayload(&models.LoginSuccess{Token: token})
 }
