@@ -29,7 +29,7 @@ func NewLogin(ctx *middleware.Context, handler LoginHandler) *Login {
 	return &Login{Context: ctx, Handler: handler}
 }
 
-/* Login swagger:route POST /signin user login
+/* Login swagger:route POST /auth/signin user login
 
 Signin with login/password and retrieve JWT token for further requests
 

@@ -66,7 +66,7 @@ swagger:response loginUnauthorized
 */
 type LoginUnauthorized struct {
 
-	/*
+	/*Error message
 	  In: Body
 	*/
 	Payload string `json:"body,omitempty"`
@@ -108,7 +108,7 @@ swagger:response loginInternalServerError
 */
 type LoginInternalServerError struct {
 
-	/*
+	/*Error message
 	  In: Body
 	*/
 	Payload string `json:"body,omitempty"`

@@ -3,7 +3,7 @@ info:
   description: API of the server for Fief Diplomatie
   title: Fief Diplomatie API
   version: 1.0.0
-basePath: /v1
+basePath: /api/v1
 consumes: ["application/json"]
 produces: ["application/json"]
 schemes: ["http"]
@@ -14,7 +14,7 @@ securityDefinitions:
     in: header
     name: Authorization
 paths:
-  /register:
+  /auth/signup:
     post:
       description: Register a new user
       tags: [user]
@@ -29,13 +29,17 @@ paths:
       responses:
         200:
           description: Successful registration
+        400:
+          description: Registration failure 
           schema:
-            $ref: '#/definitions/SuccessResponse'
+            description: Error message
+            type: string            
         500:
-          schema:
-            type: string
           description: Server error
-  /signin:
+          schema:
+            description: Error message
+            type: string
+  /auth/signin:
     post:
       tags: [user]
       operationId: Login
@@ -55,10 +59,12 @@ paths:
             $ref: '#/definitions/LoginSuccess'
         401:
           schema:
+            description: Error message  
             type: string
           description: Wrong Login/Password
         500:
           schema:
+            description: Error message
             type: string
           description: Server error
   /games:
@@ -141,13 +147,6 @@ paths:
 
 
 definitions:
-  SuccessResponse:
-    type: object
-    properties:
-      success:
-        type: boolean
-      message:
-        type: string
   RegisterUser:
     type: object
     required:
@@ -174,7 +173,5 @@ definitions:
   LoginSuccess:
     type: object
     properties:
-      success:
-        type: boolean
       token:
         type: string

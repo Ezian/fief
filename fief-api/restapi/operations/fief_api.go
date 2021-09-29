@@ -353,7 +353,7 @@ func (o *FiefAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/signin"] = user.NewLogin(o.context, o.UserLoginHandler)
+	o.handlers["POST"]["/auth/signin"] = user.NewLogin(o.context, o.UserLoginHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
@@ -369,7 +369,7 @@ func (o *FiefAPI) initHandlerCache() {
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["POST"]["/register"] = user.NewRegister(o.context, o.UserRegisterHandler)
+	o.handlers["POST"]["/auth/signup"] = user.NewRegister(o.context, o.UserRegisterHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"errors"
 	"fief/auth"
-	"fief/models"
 	"fief/restapi/operations/user"
 	"fmt"
 
@@ -26,8 +26,11 @@ func (impl *registerImpl) Handle(params user.RegisterParams) middleware.Responde
 	err := auth.RegisterNewUser(impl.dbClient, params.Signup)
 	if err != nil {
 		log.WithError(err).Error("Error registering user")
-		return user.NewRegisterInternalServerError().WithPayload(fmt.Sprintf("Error registering user: %s", err))
+		if errors.Is(err, auth.UserAlreadyExists) {
+			return user.NewRegisterBadRequest().WithPayload(fmt.Sprintf("Error registering user: %s (User already exists)", *params.Signup.Login))
+		}
+		return user.NewRegisterInternalServerError().WithPayload(fmt.Sprintf("Cannot register user: %s", *params.Signup.Login))
 	}
 	log.Info("Register user successful")
-	return user.NewRegisterOK().WithPayload(&models.SuccessResponse{Success: true, Message: "User Registered successfully"})
+	return user.NewRegisterOK()
 }

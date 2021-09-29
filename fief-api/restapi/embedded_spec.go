@@ -33,8 +33,91 @@ func init() {
     "title": "Fief Diplomatie API",
     "version": "1.0.0"
   },
-  "basePath": "/v1",
+  "basePath": "/api/v1",
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "description": "Signin with login/password and retrieve JWT token for further requests",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "Login",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Registration failure",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/games": {
       "get": {
         "security": [
@@ -179,82 +262,6 @@ func init() {
           }
         }
       }
-    },
-    "/register": {
-      "post": {
-        "description": "Register a new user",
-        "tags": [
-          "user"
-        ],
-        "operationId": "Register",
-        "parameters": [
-          {
-            "description": "Registration payload",
-            "name": "signup",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegisterUser"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful registration",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/signin": {
-      "post": {
-        "description": "Signin with login/password and retrieve JWT token for further requests",
-        "consumes": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "operationId": "Login",
-        "parameters": [
-          {
-            "name": "Login",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginInfo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "401": {
-            "description": "Wrong Login/Password",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -276,9 +283,6 @@ func init() {
     "LoginSuccess": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "token": {
           "type": "string"
         }
@@ -300,17 +304,6 @@ func init() {
         },
         "password": {
           "type": "string"
-        }
-      }
-    },
-    "SuccessResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "success": {
-          "type": "boolean"
         }
       }
     }
@@ -339,8 +332,91 @@ func init() {
     "title": "Fief Diplomatie API",
     "version": "1.0.0"
   },
-  "basePath": "/v1",
+  "basePath": "/api/v1",
   "paths": {
+    "/auth/signin": {
+      "post": {
+        "description": "Signin with login/password and retrieve JWT token for further requests",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "user"
+        ],
+        "operationId": "Login",
+        "parameters": [
+          {
+            "name": "Login",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "schema": {
+              "$ref": "#/definitions/LoginSuccess"
+            }
+          },
+          "401": {
+            "description": "Wrong Login/Password",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "description": "Register a new user",
+        "tags": [
+          "user"
+        ],
+        "operationId": "Register",
+        "parameters": [
+          {
+            "description": "Registration payload",
+            "name": "signup",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Registration failure",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "schema": {
+              "description": "Error message",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/games": {
       "get": {
         "security": [
@@ -485,82 +561,6 @@ func init() {
           }
         }
       }
-    },
-    "/register": {
-      "post": {
-        "description": "Register a new user",
-        "tags": [
-          "user"
-        ],
-        "operationId": "Register",
-        "parameters": [
-          {
-            "description": "Registration payload",
-            "name": "signup",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegisterUser"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful registration",
-            "schema": {
-              "$ref": "#/definitions/SuccessResponse"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "/signin": {
-      "post": {
-        "description": "Signin with login/password and retrieve JWT token for further requests",
-        "consumes": [
-          "application/json"
-        ],
-        "tags": [
-          "user"
-        ],
-        "operationId": "Login",
-        "parameters": [
-          {
-            "name": "Login",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginInfo"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful login",
-            "schema": {
-              "$ref": "#/definitions/LoginSuccess"
-            }
-          },
-          "401": {
-            "description": "Wrong Login/Password",
-            "schema": {
-              "type": "string"
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "schema": {
-              "type": "string"
-            }
-          }
-        }
-      }
     }
   },
   "definitions": {
@@ -582,9 +582,6 @@ func init() {
     "LoginSuccess": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
         "token": {
           "type": "string"
         }
@@ -606,17 +603,6 @@ func init() {
         },
         "password": {
           "type": "string"
-        }
-      }
-    },
-    "SuccessResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
-        },
-        "success": {
-          "type": "boolean"
         }
       }
     }
