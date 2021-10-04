@@ -74,8 +74,15 @@ paths:
         - Bearer: []
       description: List existing games
       responses:
-        '200':
+        200:
           description: TODO
+          schema:
+            $ref: '#/definitions/GamesSuccess'
+        401:
+          schema:
+            description: Error Message
+            type: string
+          description: User not authorized to view games
   /games/new:
     post:
       tags: [manage]
@@ -175,3 +182,49 @@ definitions:
     properties:
       token:
         type: string
+  GamesSuccess:
+    type: object
+    properties: 
+      available:
+        description: Game created but waiting for enough players
+        type: array
+        items:
+          $ref: '#/definitions/GameInfo'
+      joined:
+        description: Games joined by the current player
+        type: array
+        items:
+          $ref: '#/definitions/GameInfo'
+  GameInfo:
+    description: General information about existing games
+    type: object
+    required:
+      - id
+      - name
+      - players
+      - status
+    properties:       
+      id: 
+        description: UID of the game
+        type: string
+      name: 
+        description: Human readable name of the game
+        type: string
+      status:
+        description: A simple string describing the status (defined on server side)
+        type: string
+      players:
+        type: object
+        required:
+          - joined
+          - required
+        properties:
+          required:
+            description: Total players required to launch the game
+            type: number
+          joined:
+            description: Current count of players who have joined the game
+            type: number
+    
+
+
