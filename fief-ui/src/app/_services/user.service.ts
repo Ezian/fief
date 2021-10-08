@@ -3,8 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
-import { first, map } from 'rxjs/operators';
-
 
 export type RegisterUser = {
   login: string,

@@ -6,6 +6,11 @@ import sign from 'jwt-encode'
 import { LoginSuccess } from '@app/_services';
 
 let users = [{ login: 'test', password: 'test', email: 'test@test.com' }];
+let games = [
+              { id: 'fake-uid-duh-joined', name: "My Great Game (joined)", players: {joined: 2, required: 6}, status: "Waiting for Players...", joined: true },
+              { id: 'fake-uid-duh-joinable', name: "My Great Game (joinable)", players: {joined: 2, required: 6}, status: "Waiting for Players...", joined: false },
+              { id: 'fake-uid-duh-full', name: "My Great Game (Ready)", players: {joined: 6, required: 6}, status: "Waiting for orders...", joined: true },
+            ];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -27,6 +32,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                       return signup();
                 case url.endsWith('/users') && method === 'GET':
                     return getUsers();
+                case url.endsWith('/games') && method === 'GET':
+                    return getGames();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -63,6 +70,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             if (!isLoggedIn()) return unauthorized();
             return ok(users);
         }
+
+
+        function getGames() {
+          if (!isLoggedIn()) return unauthorized();
+          return ok(games);
+      }
 
         // helper functions
 

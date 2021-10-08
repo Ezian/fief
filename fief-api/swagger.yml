@@ -210,6 +210,9 @@ definitions:
       name: 
         description: Human readable name of the game
         type: string
+      joined:
+        description: If the current user as joined this game
+        type: boolean
       status:
         description: A simple string describing the status (defined on server side)
         type: string

@@ -1,10 +1,18 @@
-<div class="card mt-4">
-  <h4 class="card-header">You're logged in with Angular 10 & JWT!!</h4>
-  <div class="card-body">
-      <h6>Users from secure api end point</h6>
-      <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-      <ul *ngIf="users">
-          <li *ngFor="let user of users">{{user.login}} - {{user.email}}</li>
-      </ul>
-  </div>
+
+<div>
+
+    <h4 class="card-header">Jeux en cours</h4>
+    <div class="card-body" *ngFor="let game of games">
+      <div class="card mt-4" >
+        <h4 class="card-header">{{ game.name}} {{game.players.joined}}/{{game.players.required}} joueurs </h4>
+        <div class="card-body">
+          {{ game.status }}
+        </div>
+        <div class="card-footer" *ngIf="!game.joined || game.full">
+          <button class="btn btn-primary" *ngIf="!game.joined">Join</button>
+          <button class="btn btn-primary" *ngIf="game.joined && game.full">Play</button>
+        </div>
+      </div>
+    </div>
 </div>
+
