@@ -131,7 +131,17 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "TODO"
+            "description": "TODO",
+            "schema": {
+              "$ref": "#/definitions/GamesSuccess"
+            }
+          },
+          "401": {
+            "description": "User not authorized to view games",
+            "schema": {
+              "description": "Error Message",
+              "type": "string"
+            }
           }
         }
       }
@@ -146,6 +156,32 @@ func init() {
         "description": "Create a new game",
         "tags": [
           "manage"
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO"
+          }
+        }
+      }
+    },
+    "/games/{id}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get current state of an existing game",
+        "tags": [
+          "game"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
         ],
         "responses": {
           "200": {
@@ -236,35 +272,73 @@ func init() {
           }
         }
       }
-    },
-    "/games/{id}/status": {
-      "get": {
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get current state of an existing game",
-        "tags": [
-          "game"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "TODO"
-          }
-        }
-      }
     }
   },
   "definitions": {
+    "GameInfo": {
+      "description": "General information about existing games",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "players",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "description": "UID of the game",
+          "type": "string"
+        },
+        "joined": {
+          "description": "If the current user as joined this game",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Human readable name of the game",
+          "type": "string"
+        },
+        "players": {
+          "type": "object",
+          "required": [
+            "joined",
+            "required"
+          ],
+          "properties": {
+            "joined": {
+              "description": "Current count of players who have joined the game",
+              "type": "number"
+            },
+            "required": {
+              "description": "Total players required to launch the game",
+              "type": "number"
+            }
+          }
+        },
+        "status": {
+          "description": "A simple string describing the status (defined on server side)",
+          "type": "string"
+        }
+      }
+    },
+    "GamesSuccess": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "description": "Game created but waiting for enough players",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameInfo"
+          }
+        },
+        "joined": {
+          "description": "Games joined by the current player",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameInfo"
+          }
+        }
+      }
+    },
     "LoginInfo": {
       "type": "object",
       "required": [
@@ -430,7 +504,17 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "TODO"
+            "description": "TODO",
+            "schema": {
+              "$ref": "#/definitions/GamesSuccess"
+            }
+          },
+          "401": {
+            "description": "User not authorized to view games",
+            "schema": {
+              "description": "Error Message",
+              "type": "string"
+            }
           }
         }
       }
@@ -445,6 +529,32 @@ func init() {
         "description": "Create a new game",
         "tags": [
           "manage"
+        ],
+        "responses": {
+          "200": {
+            "description": "TODO"
+          }
+        }
+      }
+    },
+    "/games/{id}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "description": "Get current state of an existing game",
+        "tags": [
+          "game"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
         ],
         "responses": {
           "200": {
@@ -535,35 +645,90 @@ func init() {
           }
         }
       }
-    },
-    "/games/{id}/status": {
-      "get": {
-        "security": [
-          {
-            "Bearer": []
-          }
-        ],
-        "description": "Get current state of an existing game",
-        "tags": [
-          "game"
-        ],
-        "parameters": [
-          {
-            "type": "string",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "TODO"
-          }
-        }
-      }
     }
   },
   "definitions": {
+    "GameInfo": {
+      "description": "General information about existing games",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "players",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "description": "UID of the game",
+          "type": "string"
+        },
+        "joined": {
+          "description": "If the current user as joined this game",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Human readable name of the game",
+          "type": "string"
+        },
+        "players": {
+          "type": "object",
+          "required": [
+            "joined",
+            "required"
+          ],
+          "properties": {
+            "joined": {
+              "description": "Current count of players who have joined the game",
+              "type": "number"
+            },
+            "required": {
+              "description": "Total players required to launch the game",
+              "type": "number"
+            }
+          }
+        },
+        "status": {
+          "description": "A simple string describing the status (defined on server side)",
+          "type": "string"
+        }
+      }
+    },
+    "GameInfoPlayers": {
+      "type": "object",
+      "required": [
+        "joined",
+        "required"
+      ],
+      "properties": {
+        "joined": {
+          "description": "Current count of players who have joined the game",
+          "type": "number"
+        },
+        "required": {
+          "description": "Total players required to launch the game",
+          "type": "number"
+        }
+      }
+    },
+    "GamesSuccess": {
+      "type": "object",
+      "properties": {
+        "available": {
+          "description": "Game created but waiting for enough players",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameInfo"
+          }
+        },
+        "joined": {
+          "description": "Games joined by the current player",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameInfo"
+          }
+        }
+      }
+    },
     "LoginInfo": {
       "type": "object",
       "required": [

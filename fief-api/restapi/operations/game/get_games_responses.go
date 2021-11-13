@@ -9,6 +9,8 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"fief/models"
 )
 
 // GetGamesOKCode is the HTTP code returned for type GetGamesOK
@@ -19,6 +21,11 @@ const GetGamesOKCode int = 200
 swagger:response getGamesOK
 */
 type GetGamesOK struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.GamesSuccess `json:"body,omitempty"`
 }
 
 // NewGetGamesOK creates GetGamesOK with default headers values
@@ -27,10 +34,67 @@ func NewGetGamesOK() *GetGamesOK {
 	return &GetGamesOK{}
 }
 
+// WithPayload adds the payload to the get games o k response
+func (o *GetGamesOK) WithPayload(payload *models.GamesSuccess) *GetGamesOK {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get games o k response
+func (o *GetGamesOK) SetPayload(payload *models.GamesSuccess) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetGamesOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(200)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// GetGamesUnauthorizedCode is the HTTP code returned for type GetGamesUnauthorized
+const GetGamesUnauthorizedCode int = 401
+
+/*GetGamesUnauthorized User not authorized to view games
+
+swagger:response getGamesUnauthorized
+*/
+type GetGamesUnauthorized struct {
+
+	/*Error Message
+	  In: Body
+	*/
+	Payload string `json:"body,omitempty"`
+}
+
+// NewGetGamesUnauthorized creates GetGamesUnauthorized with default headers values
+func NewGetGamesUnauthorized() *GetGamesUnauthorized {
+
+	return &GetGamesUnauthorized{}
+}
+
+// WithPayload adds the payload to the get games unauthorized response
+func (o *GetGamesUnauthorized) WithPayload(payload string) *GetGamesUnauthorized {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get games unauthorized response
+func (o *GetGamesUnauthorized) SetPayload(payload string) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetGamesUnauthorized) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(401)
+	payload := o.Payload
+	if err := producer.Produce(rw, payload); err != nil {
+		panic(err) // let the recovery middleware deal with this
+	}
 }

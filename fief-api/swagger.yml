@@ -106,7 +106,7 @@ paths:
       responses:
         '200':
           description: TODO
-  /games/{id}/status:
+  /games/{id}:
     get:
       tags: [game]
       security:
