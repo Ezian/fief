@@ -13,4 +13,8 @@ export class GamesService {
   getAll(){
     return this.http.get<GameInfo[]>(`${environment.apiUrl}/games`)
   }
+
+  join(game: GameInfo){
+    return this.http.post(`${environment.apiUrl}/games/${game.id}/join`, null)
+  }
 }

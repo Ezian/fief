@@ -9,7 +9,7 @@
           {{ game.status }}
         </div>
         <div class="card-footer" *ngIf="!game.joined || game.full">
-          <button class="btn btn-primary" *ngIf="!game.joined">Join</button>
+          <button class="btn btn-primary" *ngIf="!game.joined" (click)="join(game)">Join</button>
           <button class="btn btn-primary" *ngIf="game.joined && game.full">Play</button>
         </div>
       </div>
