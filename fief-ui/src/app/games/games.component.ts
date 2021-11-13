@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from '@app/_alert';
 import { GameInfo, User } from '@app/_models';
 import { GamesService } from '@app/_services';
 import { first } from 'rxjs/operators';
 
-type GameInfoView = Partial<GameInfo> & {full: boolean}
+type GameInfoView = Partial<GameInfo> & { full: boolean }
 
 @Component({
   selector: 'app-games',
@@ -15,31 +16,31 @@ export class GamesComponent implements OnInit {
   loading = false;
   games: GameInfoView[];
 
-  constructor(private gamesService: GamesService) { }
+  constructor(private gamesService: GamesService, private alertService: AlertService) { }
 
   ngOnInit() {
     this.updateGames()
   }
 
-  join(game: GameInfo){
-    console.log("test")
+  join(game: GameInfo) {
     this.gamesService.join(game).pipe(first())
-    .subscribe({
+      .subscribe({
         next: () => {
+          this.alertService.info('Game joined.', {autoClose: true})
           this.updateGames()
         },
         error: error => {
-          // TODO handle error through a alert : Check maybe https://jasonwatmore.com/post/2019/07/05/angular-8-alert-toaster-notifications
-            this.loading = false;
+          this.alertService.error('Unable to join game... Try again', {autoClose: true})
+          this.loading = false;
         }
-    });
+      });
   }
 
-  updateGames(){
+  updateGames() {
     this.loading = true;
     this.gamesService.getAll().pipe(first()).subscribe(g => {
-        this.loading = false;
-        this.games = g.map(info => {let gi = info as GameInfoView; gi.full = info.players.joined === info.players.required; return gi});
+      this.loading = false;
+      this.games = g.map(info => { let gi = info as GameInfoView; gi.full = info.players.joined === info.players.required; return gi });
     });
   }
 }

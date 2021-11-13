@@ -91,7 +91,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function join() {
       if (!isLoggedIn()) return unauthorized();
-      console.log('Join player');
       games[1].players.joined++;
       games[1].joined = true;
       return ok();
