@@ -65,9 +65,9 @@ func configureAPI(api *operations.FiefAPI) http.Handler {
 			return middleware.NotImplemented("operation game.GetGamesIDInstructions has not yet been implemented")
 		})
 	}
-	if api.GameGetGamesIDStatusHandler == nil {
-		api.GameGetGamesIDStatusHandler = game.GetGamesIDStatusHandlerFunc(func(params game.GetGamesIDStatusParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation game.GetGamesIDStatus has not yet been implemented")
+	if api.GameGetGamesIDHandler == nil {
+		api.GameGetGamesIDHandler = game.GetGamesIDHandlerFunc(func(params game.GetGamesIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation game.GetGamesID has not yet been implemented")
 		})
 	}
 

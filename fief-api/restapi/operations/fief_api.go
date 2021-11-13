@@ -49,11 +49,11 @@ func NewFiefAPI(spec *loads.Document) *FiefAPI {
 		GameGetGamesHandler: game.GetGamesHandlerFunc(func(params game.GetGamesParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation game.GetGames has not yet been implemented")
 		}),
+		GameGetGamesIDHandler: game.GetGamesIDHandlerFunc(func(params game.GetGamesIDParams, principal interface{}) middleware.Responder {
+			return middleware.NotImplemented("operation game.GetGamesID has not yet been implemented")
+		}),
 		GameGetGamesIDInstructionsHandler: game.GetGamesIDInstructionsHandlerFunc(func(params game.GetGamesIDInstructionsParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation game.GetGamesIDInstructions has not yet been implemented")
-		}),
-		GameGetGamesIDStatusHandler: game.GetGamesIDStatusHandlerFunc(func(params game.GetGamesIDStatusParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation game.GetGamesIDStatus has not yet been implemented")
 		}),
 		UserLoginHandler: user.LoginHandlerFunc(func(params user.LoginParams) middleware.Responder {
 			return middleware.NotImplemented("operation user.Login has not yet been implemented")
@@ -122,10 +122,10 @@ type FiefAPI struct {
 
 	// GameGetGamesHandler sets the operation handler for the get games operation
 	GameGetGamesHandler game.GetGamesHandler
+	// GameGetGamesIDHandler sets the operation handler for the get games ID operation
+	GameGetGamesIDHandler game.GetGamesIDHandler
 	// GameGetGamesIDInstructionsHandler sets the operation handler for the get games ID instructions operation
 	GameGetGamesIDInstructionsHandler game.GetGamesIDInstructionsHandler
-	// GameGetGamesIDStatusHandler sets the operation handler for the get games ID status operation
-	GameGetGamesIDStatusHandler game.GetGamesIDStatusHandler
 	// UserLoginHandler sets the operation handler for the login operation
 	UserLoginHandler user.LoginHandler
 	// GamePostGamesIDInstructionsHandler sets the operation handler for the post games ID instructions operation
@@ -220,11 +220,11 @@ func (o *FiefAPI) Validate() error {
 	if o.GameGetGamesHandler == nil {
 		unregistered = append(unregistered, "game.GetGamesHandler")
 	}
+	if o.GameGetGamesIDHandler == nil {
+		unregistered = append(unregistered, "game.GetGamesIDHandler")
+	}
 	if o.GameGetGamesIDInstructionsHandler == nil {
 		unregistered = append(unregistered, "game.GetGamesIDInstructionsHandler")
-	}
-	if o.GameGetGamesIDStatusHandler == nil {
-		unregistered = append(unregistered, "game.GetGamesIDStatusHandler")
 	}
 	if o.UserLoginHandler == nil {
 		unregistered = append(unregistered, "user.LoginHandler")
@@ -345,11 +345,11 @@ func (o *FiefAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/games/{id}/instructions"] = game.NewGetGamesIDInstructions(o.context, o.GameGetGamesIDInstructionsHandler)
+	o.handlers["GET"]["/games/{id}"] = game.NewGetGamesID(o.context, o.GameGetGamesIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/games/{id}/status"] = game.NewGetGamesIDStatus(o.context, o.GameGetGamesIDStatusHandler)
+	o.handlers["GET"]["/games/{id}/instructions"] = game.NewGetGamesIDInstructions(o.context, o.GameGetGamesIDInstructionsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

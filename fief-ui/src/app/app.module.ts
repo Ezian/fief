@@ -5,15 +5,16 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
+import { AlertModule } from './_alert'
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { HomeComponent } from './home';
 import { LoginComponent } from './login';;
 import { RegisterComponent } from './register/register.component'
-import { environment } from '@environments/environment';
+import { environment } from '@environments/environment';;
+import { GamesComponent } from './games/games.component'
 
 function providers(){
   let providers: any = [
@@ -31,14 +32,16 @@ function providers(){
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        AlertModule
     ],
     declarations: [
         AppComponent,
-        HomeComponent,
+        GamesComponent,
         LoginComponent
 ,
-        RegisterComponent    ],
+        RegisterComponent ,
+        GamesComponent   ],
     providers: providers(),
     bootstrap: [AppComponent]
 })

@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private userService: UserService,
     ) {
-      // redirect to home if already logged in
+      // redirect to Games if already logged in
       if (this.authenticationService.currentUserValue) {
           this.router.navigate(['/']);
       }
